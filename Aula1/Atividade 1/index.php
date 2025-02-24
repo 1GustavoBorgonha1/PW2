@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercício 1. - Revisão PHP - Métodos HTTP</title>
+    <title>Exercício 1 - Revisão PHP - Métodos HTTP</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,8 +25,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Exercício 1. - Revisão PHP - Métodos HTTP</h1>
-        <form action="destino.php" method="post">
+        <h1>Exercício 1 - Revisão PHP - Métodos HTTP</h1>
+        <form action="destino.php" method="get">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" placeholder="Nome" required>
 
