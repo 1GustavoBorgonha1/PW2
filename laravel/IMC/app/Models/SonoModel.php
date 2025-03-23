@@ -2,55 +2,47 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class SonoModel extends Model
+class SonoModel
 {
     public static function classificar($idade, $horas, $mes = null)
     {
-        if ($idade < 0 || $horas < 0 || ($mes !== null && ($mes < 0 || $mes > 12))) {
-            return null; // Validação básica para idades e meses negativos
+        // Validação
+        if ($idade <= 0 || $horas < 0 || ($mes !== null && ($mes <= 0 || $mes > 12))) {
+            return 'Erro: Valores inválidos. Idade, horas ou meses estão incorretos.';
         }
 
-        // Classificação para menores de 1 ano (usando meses)
-        if ($idade < 1) {
-            if ($mes >= 0 && $mes <= 3) { // 0 a 3 meses
-                return self::classificarSonoPorHoras($horas, 14, 17, 'Dormindo bem', 'Dormindo mal');
-            } elseif ($mes >= 4 && $mes <= 11) { // 4 a 11 meses
-                return self::classificarSonoPorHoras($horas, 10, 14, 'Dormindo bem', 'Dormindo mal');
-            }
-        }
+        // Faixas etárias e recomendação de sono (horas mínimas e máximas)
+        $faixas = [
+            ['min' => 14, 'max' => 17, 'idadeMin' => 0, 'idadeMax' => 0, 'mesMin' => 0, 'mesMax' => 3],  // 0 a 3 meses
+            ['min' => 10, 'max' => 14, 'idadeMin' => 0, 'idadeMax' => 0, 'mesMin' => 4, 'mesMax' => 11], // 4 a 11 meses
+            ['min' => 11, 'max' => 14, 'idadeMin' => 1, 'idadeMax' => 2], // 1 a 2 anos
+            ['min' => 10, 'max' => 13, 'idadeMin' => 3, 'idadeMax' => 5], // 3 a 5 anos
+            ['min' => 9,  'max' => 11, 'idadeMin' => 6, 'idadeMax' => 13], // 6 a 13 anos
+            ['min' => 8,  'max' => 10, 'idadeMin' => 14, 'idadeMax' => 17], // 14 a 17 anos
+            ['min' => 7,  'max' => 9,  'idadeMin' => 18, 'idadeMax' => 64], // 18 a 64 anos
+            ['min' => 7,  'max' => 8,  'idadeMin' => 65, 'idadeMax' => 200] // 65+ anos
+        ];
 
-        // Classificação para 1 ano ou mais (usando anos)
-        if ($idade >= 1) {
-            // Classificação de acordo com a faixa etária
-            if ($idade >= 1 && $idade <= 2) { // 1 a 2 anos
-                return self::classificarSonoPorHoras($horas, 11, 14, 'Dormindo bem', 'Dormindo mal');
-            } elseif ($idade >= 3 && $idade <= 5) { // 3 a 5 anos
-                return self::classificarSonoPorHoras($horas, 10, 13, 'Dormindo bem', 'Dormindo mal');
-            } elseif ($idade >= 6 && $idade <= 13) { // 6 a 13 anos
-                return self::classificarSonoPorHoras($horas, 9, 11, 'Dormindo bem', 'Dormindo mal');
-            } elseif ($idade >= 14 && $idade <= 17) { // 14 a 17 anos
-                return self::classificarSonoPorHoras($horas, 8, 10, 'Dormindo bem', 'Dormindo mal');
-            } elseif ($idade >= 18 && $idade <= 64) { // 18 a 64 anos
-                return self::classificarSonoPorHoras($horas, 7, 9, 'Dormindo bem', 'Dormindo mal');
-            } elseif ($idade >= 65) { // 65 anos ou mais
-                return self::classificarSonoPorHoras($horas, 7, 8, 'Dormindo bem', 'Dormindo mal');
+        foreach ($faixas as $faixa) {
+            if (
+                ($idade >= $faixa['idadeMin'] && $idade <= $faixa['idadeMax']) &&
+                (!isset($faixa['mesMin']) || ($mes >= $faixa['mesMin'] && $mes <= $faixa['mesMax']))
+            ) {
+                return self::classificarSonoPorHoras($horas, $faixa['min'], $faixa['max']);
             }
         }
 
         return 'Faixa etária não definida';
     }
 
-    // Função auxiliar para classificar o sono por horas
-    private static function classificarSonoPorHoras($horas, $min, $max, $dormindoBem, $dormindoMal)
+    private static function classificarSonoPorHoras($horas, $min, $max)
     {
         if ($horas < $min) {
-            return $dormindoMal;
+            return 'Dormindo mal';
         } elseif ($horas > $max) {
             return 'Dormindo demais';
         } else {
-            return $dormindoBem;
+            return 'Dormindo bem';
         }
     }
 }

@@ -7,24 +7,30 @@
     <title>Qualidade de Sono</title>
 </head>
 <body>
-    <h1>Qualidade de Sono</h1>
-    <p>Insira as informações para avaliar a qualidade do seu sono:</p>
-    <form action="/SonoResultView" method="post">
-        @csrf
-        <label for="hora" class="form-label">Média de horas dormidas:</label>
-        <input type="number" name="hora" id="hora" class="form-control" required>
+    <div class="container mt-5">
+        <h1>Qualidade de Sono</h1>
+        <p>Insira as informações para avaliar a qualidade do seu sono:</p>
 
-        <br><br>
+        <form action="/ResultSonoView" method="post">
+            @csrf
 
-        <label for="idade" class="form-label">Sua Idade:</label>
-        <input type="number" name="idade" class="form-control" id="idade" placeholder="Digite quantos anos você tem" required>
-        <label for="mes" class="form-label">Se for um recem nascido, digite quantos meses ele tem (e deixe a idade em 0):</label>
-        <input type="number" name="mes" class="form-control" id="mes"required>
+            <label for="hora" class="form-label">Média de horas dormidas:</label>
+            <input type="number" name="hora" id="hora" class="form-control" step="0.1" required>
 
-        <br><br>
+            <br>
 
-        <button type="submit" class="btn btn-primary">Descobrir sua qualidade de sono!</button>
-        <hr>
-    </form>
+            <label for="idade" class="form-label">Sua Idade:</label>
+            <input type="number" name="idade" class="form-control" id="idade" placeholder="Digite quantos anos você tem" required>
+
+            <br>
+
+            <label for="mes" class="form-label">Se for um recém-nascido, digite quantos meses ele tem (caso contrário, deixe 0):</label>
+            <input type="number" name="mes" class="form-control" id="mes" required>
+
+            <br>
+
+            <button type="submit" class="btn btn-primary">Descobrir sua qualidade de sono!</button>
+        </form>
+    </div>
 </body>
 </html>
