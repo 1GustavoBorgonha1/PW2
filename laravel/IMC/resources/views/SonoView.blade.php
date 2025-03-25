@@ -24,8 +24,8 @@
 
             <br>
 
-            <label for="mes" class="form-label">Se for um recém-nascido, digite quantos meses ele tem (caso contrário, deixe 0):</label>
-            <input type="number" name="mes" class="form-control" id="mes" required>
+            <label for="mes" class="form-label">Se for um recém-nascido, digite quantos meses ele tem (caso contrário, deixe em branco):</label>
+            <input type="number" name="mes" class="form-control" id="mes">
 
             <br>
 

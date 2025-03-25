@@ -12,7 +12,7 @@
         <div class="resultado">
             <p><strong>Idade:</strong> {{ $idade }} anos</p>
             <p><strong>Meses:</strong> {{ $mes ?? 'N/A' }}</p>
-            <p><strong>Horas Dormidas:</strong> {{ $horas }} horas</p>
+            <p><strong>Horas Dormidas:</strong> {{ $hora }} horas</p>
             <p><strong>Classificação:</strong> {{ $classificacao }}</p>
         </div>
     </div>

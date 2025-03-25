@@ -2,14 +2,33 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
+
 class SonoModel
 {
     public static function classificar($idade, $horas, $mes = null)
     {
-        // Validação
-        if ($idade <= 0 || $horas < 0 || ($mes !== null && ($mes <= 0 || $mes > 12))) {
-            return 'Erro: Valores inválidos. Idade, horas ou meses estão incorretos.';
+        // Log usando Facade
+        Log::info('Valores recebidos no Model:', [
+            'idade' => $idade,
+            'horas' => $horas,
+            'mes' => $mes
+        ]);
+
+        // Validação mais flexível
+        if ($idade <= 0) {
+            return 'Erro: Idade inválida. Deve ser maior que zero.';
         }
+
+        if ($horas < 0) {
+            return 'Erro: Horas de sono inválidas. Não podem ser negativas.';
+        }
+
+        if ($mes !== null && ($mes < 0 || $mes > 12)) {
+            return 'Erro: Mês inválido. Deve estar entre 0 e 12.';
+        }
+
+        // Resto do código permanece o mesmo...
 
         // Faixas etárias e recomendação de sono (horas mínimas e máximas)
         $faixas = [
@@ -24,10 +43,18 @@ class SonoModel
         ];
 
         foreach ($faixas as $faixa) {
-            if (
-                ($idade >= $faixa['idadeMin'] && $idade <= $faixa['idadeMax']) &&
-                (!isset($faixa['mesMin']) || ($mes >= $faixa['mesMin'] && $mes <= $faixa['mesMax']))
-            ) {
+            // Verifica se a idade está na faixa
+            $idadeValida = ($idade >= $faixa['idadeMin'] && $idade <= $faixa['idadeMax']);
+
+            // Verificação para bebês
+            $mesValido = true;
+            if (isset($faixa['mesMin'])) {
+                $mesValido = ($mes !== null && $mes >= $faixa['mesMin'] && $mes <= $faixa['mesMax']);
+            }
+
+            // Se for um bebê (meses definidos), usa a lógica de meses
+            // Se for uma idade maior, ignora o mês
+            if ($idadeValida && ($mesValido || !isset($faixa['mesMin']))) {
                 return self::classificarSonoPorHoras($horas, $faixa['min'], $faixa['max']);
             }
         }

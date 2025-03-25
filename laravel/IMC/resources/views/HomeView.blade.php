@@ -15,6 +15,9 @@
         <li>
             <a href="/SonoView">Qualidade de Sono</a>
         </li>
+        <li>
+            <a href="/GastoView">Calculadora de Gasto em Viagem</a>
+        </li>
     </ul>
 </body>
 </html>
