@@ -7,6 +7,7 @@
     <title>Qualidade de Sono</title>
 </head>
 <body>
+    @extends('layouts.app')
     <div class="container mt-5">
         <h1>Qualidade de Sono</h1>
         <p>Insira as informações para avaliar a qualidade do seu sono:</p>

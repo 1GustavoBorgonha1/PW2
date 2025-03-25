@@ -7,17 +7,14 @@
     <title>Tela Inicial</title>
 </head>
 <body>
-    <h1>Tela Inicial</h1>
-    <ul>
-        <li>
-            <a href="/ImcView">Calculadora de IMC</a>
-        </li>
-        <li>
-            <a href="/SonoView">Qualidade de Sono</a>
-        </li>
-        <li>
-            <a href="/GastoView">Calculadora de Gasto em Viagem</a>
-        </li>
-    </ul>
+    @extends('layouts.app')
+    <div class="home-container">
+        <h1 class="home-title">Tela Inicial</h1>
+        <div class="home-links">
+            <a href="/ImcView" class="home-link">Calculadora de IMC</a>
+            <a href="/SonoView" class="home-link">Qualidade de Sono</a>
+            <a href="/GastoView" class="home-link">Calculadora de Gasto em Viagem</a>
+        </div>
+    </div>
 </body>
 </html>

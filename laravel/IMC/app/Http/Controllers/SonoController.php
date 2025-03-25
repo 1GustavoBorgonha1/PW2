@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 class SonoController extends Controller
 {
+    public function index()
+    {
+        return view('SonoView');
+    }
+
     public function classificar(Request $request)
     {
         // Validação dos campos

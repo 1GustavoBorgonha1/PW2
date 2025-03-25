@@ -6,7 +6,7 @@
     <title>Calculadora de IMC</title>
 </head>
 <body>
-
+@extends('layouts.app')
 <h1>Validação de IMC</h1>
 
 <p>Para saber seu IMC precisamos de algumas informações:</p>

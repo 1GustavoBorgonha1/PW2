@@ -5,15 +5,16 @@
     <title>Resultado do Cálculo de Consumo</title>
 </head>
 <body>
-    <div>
-        <h2>Resultado do Cálculo de Consumo</h2>
-        <div>
-            <p>O valor total do gasto será de:</p>
-            <ul>
-                <li>{{ $combustivel }}: R$ {{ $gastoTotal }}</li>
-            </ul>
+    @extends('layouts.app')
+    <div class="container">
+        <div class="resultado-container">
+            <h2>Resultado do Cálculo de Consumo</h2>
+            <div class="gasto-info">
+                <p>O valor total do gasto será de:</p>
+                <p><strong>{{ $combustivel }}: R$ {{ $gastoTotal }}</strong></p>
+            </div>
+            <a href="/" class="btn btn-primary">Voltar à Página Inicial</a>
         </div>
-        <a href="/">Voltar</a>
     </div>
 </body>
 </html>

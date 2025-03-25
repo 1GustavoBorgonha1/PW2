@@ -5,6 +5,7 @@
     <title>Cálculo de Consumo de Combustível</title>
 </head>
 <body>
+    @extends('layouts.app')
     <div>
         <h2>Instruções</h2>
         <p>Esta aplicação tem como finalidade demonstrar os valores que serão gastos com combustível durante uma viagem, com base no consumo do seu veículo e com a distância determinada por você!</p>

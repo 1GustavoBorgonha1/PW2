@@ -6,6 +6,7 @@
     <title>Qualidade de Sono</title>
 </head>
 <body>
+    @extends('layouts.app')
     <div class="container mt-5">
         <h2 class="text-center">Resultado da qualidade de seu sono:</h2>
 
@@ -15,6 +16,7 @@
             <p><strong>Horas Dormidas:</strong> {{ $hora }} horas</p>
             <p><strong>Classificação:</strong> {{ $classificacao }}</p>
         </div>
+        <a href="/" class="btn btn-primary">Voltar à Página Inicial</a>
     </div>
 </body>
 </html>
