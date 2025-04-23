@@ -30,6 +30,12 @@
                  <a href="{{ route('item.index') }}">Cadastro de Itens</a>
                 </div>
             </div>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                 {{-- {{ __("Cadastro de Categoria") }} --}}
+                 <a href="{{ route('movimento.index') }}">Movimentação de Itens</a>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

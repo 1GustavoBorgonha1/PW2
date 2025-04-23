@@ -9,8 +9,7 @@ class LocalController extends Controller
 {
     public function index()
     {
-        $locais = local::all();
-        // dd($locais); // Adicione esta linha
+        $locais = Local::all();
         return view('local.index', compact('locais'));
     }
 
@@ -57,7 +56,7 @@ class LocalController extends Controller
             'pontoreferencia' => 'nullable|string|max:255',
         ]);
 
-        $local->update($request->only(['identifica', 'descricao', 'rua', 'numero', 'bairro', 'cep', 'cidade', 'estado', 'complemento', 'pontoreferencia']));
+        $local->update($request->only(['identifica', 'rua', 'numero', 'bairro', 'cep', 'cidade', 'estado', 'complemento', 'pontoreferencia']));
 
         return redirect()->route('local.index')->with('success', 'Local atualizado com sucesso!');
     }

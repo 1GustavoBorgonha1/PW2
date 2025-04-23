@@ -16,9 +16,9 @@
 
         <form action="{{ route('local.store') }}" method="POST" class="space-y-4">
             @csrf
-            <div>
-                <label for="identifica" class="block">Indentificão do Local</label>
-                <input type="text" name="identifica" id="identifica" class="w-full border p-2 rounded" required>
+            <div class="form-group">
+                <label for="identifica">Identificação do Local</label>
+                <input type="text" name="identifica" id="identifica" class="form-control" required>
             </div>
 
             <div>
