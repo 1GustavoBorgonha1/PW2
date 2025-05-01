@@ -42,14 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/item/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('/item/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
 
-
     Route::get('/movimento', [MovimentoController::class, 'index'])->name('movimento.index');
-    Route::get('/movimento/create', [MovimentoController::class, 'create'])->name('movimento.create');
+    Route::get('/movimento/criar', [MovimentoController::class, 'create'])->name('movimento.create');
     Route::post('/movimento', [MovimentoController::class, 'store'])->name('movimento.store');
     Route::delete('/movimento/{movimento}', [MovimentoController::class, 'destroy'])->name('movimento.destroy');
 
-    Route::get('/movimento/{movimento}/itens/create', [ItemMovimentoController::class, 'create'])->name('movimento.item_create');
-    Route::post('/movimento/itens', [ItemMovimentoController::class, 'store'])->name('itens_movimento.store');
 });
 
 require __DIR__.'/auth.php';

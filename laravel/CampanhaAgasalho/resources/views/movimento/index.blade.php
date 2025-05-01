@@ -10,9 +10,9 @@
             </div>
         @endif
 
-        <a href="{{ route('movimento.create') }}" class="bg-green-500 text-whmov px-4 py-2 rounded mb-4 inline-bmovk">Novo Movimento</a>
-        <br>
-        <br>
+        <a href="{{ route('movimento.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">Novo Movimento</a>
+        <br><br>
+
         @if (count($movimentos) > 0)
             <table class="w-full border-collapse">
                 <thead>
@@ -21,7 +21,7 @@
                         <th class="border p-2">Observação</th>
                         <th class="border p-2">Local</th>
                         <th class="border p-2">Tipo de Movimento</th>
-                        <th class="border p-2">Ações</th> {{-- Nova coluna para as ações --}}
+                        <th class="border p-2">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,14 +31,13 @@
                             <td class="border p-2">{{ $mov->observacao }}</td>
                             <td class="border p-2">{{ $mov->local->identifica }}</td>
                             <td class="border p-2">
-                                @if ($mov->tipo == 1)
+                                @if ($mov->tipo_movimento == 1)
                                     Entrada
                                 @else
                                     Saída
                                 @endif
                             </td>
                             <td class="border p-2 flex space-x-2">
-                                <a href="{{ route('movimento.item_create', $mov->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded"> + Itens</a>
                                 <form action="{{ route('movimento.destroy', $mov->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este movimento?')">
                                     @csrf
                                     @method('DELETE')

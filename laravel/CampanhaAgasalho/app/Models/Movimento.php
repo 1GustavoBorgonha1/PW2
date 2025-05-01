@@ -11,7 +11,9 @@ class Movimento extends Model
 
     public function itens()
     {
-        return $this->belongsToMany(Item::class, 'itens_movimento', 'movimento_id', 'item_id')->withPivot('quantidade');
+        return $this->belongsToMany(Item::class, 'itens_movimento')
+                    ->withPivot('qtd')
+                    ->withTimestamps();
     }
 
     public function local()

@@ -17,54 +17,59 @@ class ItemMovimentoController extends Controller
      * @param int $movimentoId
      * @return \Illuminate\View\View
      */
-    public function create($movimento_id): View
+    public function store(Request $request, $movimentoId): RedirectResponse
     {
-        try {
-            $movimento = Movimento::findOrFail($movimento_id); // Garante que o movimento existe
-        } catch (ModelNotFoundException $e) {
-            // Se o movimento não existe, redireciona com erro.
-            return view('errors.generic', ['message' => 'Movimento não encontrado.']);
-        }
-        $itens = Item::all();
-        return view('movimento.item_create', compact('itens', 'movimento_id'));
-    }
-
-    /**
-     * Adiciona um item a um movimento existente.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request): RedirectResponse
-    {
+        // Validar os dados do request
         $request->validate([
-            'movimento_id' => 'required|exists:movimentos,id',
-            'item_id' => 'required|exists:itens,id',
-            'qtd' => 'required|integer|min:1',
+            'produtos' => 'required|array|min:1',
+            'produtos.*' => 'exists:itens,id',
+            'quantidades' => 'required|array|min:1',
+            'quantidades.*' => 'integer|min:1',
         ]);
 
-        $movimento = Movimento::findOrFail($request->movimento_id);
-        $item = Item::findOrFail($request->item_id);
+        // Remover esta linha - dd($request->all());
 
-        // Verifica se o item já existe no movimento
-        if ($movimento->itens()->where('item_id', $request->item_id)->exists()) {
-            return redirect()->back()->withErrors(['error' => 'Item já adicionado a este movimento.']);
-        }
+        try {
+            // Recupera o movimento
+            $movimento = Movimento::findOrFail($movimentoId);
 
-        $movimento->itens()->attach($request->item_id, ['qtd' => $request->qtd]);
+            // Percorre os produtos e quantidades
+            foreach ($request->produtos as $index => $itemId) {
+                // Verifica se a quantidade foi informada
+                if (!isset($request->quantidades[$index]) || $request->quantidades[$index] === null) {
+                    return redirect()->back()->withErrors(['error' => 'A quantidade para o item ' . $itemId . ' não foi informada.']);
+                }
 
-        // Atualiza o estoque
-        if ($movimento->tipo_movimento == 1) { // 1 para entrada
-            $item->estoque += $request->qtd;
-        } else {
-            $item->estoque -= $request->qtd;
-            if ($item->estoque < 0) {
-                $movimento->itens()->detach($request->item_id);
-                return redirect()->back()->withErrors(['error' => 'Estoque insuficiente para realizar a saída do item.']);
+                // Recupera a quantidade para este item
+                $quantidade = $request->quantidades[$index];
+
+                // Recupera o item e atualiza o estoque
+                $item = Item::findOrFail($itemId);
+
+                // Verifica estoque antes se for saída
+                if ($movimento->tipo_movimento == 2 && $item->estoque < $quantidade) {
+                    return redirect()->back()->withErrors(['error' => 'Estoque insuficiente para a saída do item ' . $item->nome . '.']);
+                }
+
+                // Anexa o item ao movimento com a quantidade
+                $movimento->itens()->attach($itemId, ['qtd' => $quantidade]);
+
+                // Atualiza o estoque com base no tipo de movimento
+                if ($movimento->tipo_movimento == 1) {
+                    $item->estoque += $quantidade;  // Entrada de estoque
+                } else {
+                    $item->estoque -= $quantidade;  // Saída de estoque
+                }
+
+                // Salva o item após a alteração do estoque
+                $item->save();
             }
-        }
-        $item->save();
 
-        return redirect()->route('movimento.index')->with('success', 'Item adicionado ao movimento!');
+            // Redireciona com mensagem de sucesso
+            return redirect()->route('movimento.show', $movimento->id)
+                             ->with('success', 'Itens adicionados ao movimento com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Erro ao processar o movimento: ' . $e->getMessage()]);
+        }
     }
 }
