@@ -5,12 +5,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CampanhaController;
 use App\Http\Controllers\ItemMovimentoController;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/campanhaagasalho', [CampanhaController::class, 'index'])->name('campanha.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -46,6 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/movimento/criar', [MovimentoController::class, 'create'])->name('movimento.create');
     Route::post('/movimento', [MovimentoController::class, 'store'])->name('movimento.store');
     Route::delete('/movimento/{movimento}', [MovimentoController::class, 'destroy'])->name('movimento.destroy');
+    Route::get('/movimento/{id}', [MovimentoController::class, 'show'])->name('movimento.show');
+
 
 });
 

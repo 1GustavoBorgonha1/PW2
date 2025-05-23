@@ -20,4 +20,7 @@ class Movimento extends Model
     {
         return $this->belongsTo(Local::class, 'local_id');
     }
+
+
 }
+

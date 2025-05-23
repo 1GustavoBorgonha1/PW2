@@ -114,9 +114,11 @@ class MovimentoController extends Controller
      */
     public function show($id)
     {
-        $movimento = Movimento::with(['itens', 'local'])->findOrFail($id);
+        $movimento = Movimento::with('local', 'itens')->findOrFail($id);
+
         return view('movimento.show', compact('movimento'));
     }
+
 
     /**
      * Remove o movimento especificado e estorna o estoque.
@@ -161,5 +163,7 @@ class MovimentoController extends Controller
             DB::rollBack();
             return redirect()->route('movimento.index')->with('error', 'Erro ao excluir movimento e estornar estoque: ' . $e->getMessage());
         }
+
     }
+
 }

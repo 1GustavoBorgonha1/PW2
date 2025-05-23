@@ -1,41 +1,47 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Menu') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
+                <div class="p-6 text-gray-900 font-semibold text-xl">
                     {{ __("Menu") }}
                 </div>
             </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
                 <div class="p-6 text-gray-900">
-                 {{-- {{ __("Cadastro de Categoria") }} --}}
-                 <a href="{{ route('categoria.index') }}">Cadastro de Categoria</a>
+                    <a href="{{ route('categoria.index') }}" class="text-blue-600 hover:underline">
+                        Cadastro de Categoria
+                    </a>
                 </div>
             </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
                 <div class="p-6 text-gray-900">
-                 {{-- {{ __("Cadastro de Categoria") }} --}}
-                 <a href="{{ route('local.index') }}">Cadastro de Locais de Coleta</a>
+                    <a href="{{ route('local.index') }}" class="text-blue-600 hover:underline">
+                        Cadastro de Locais de Coleta
+                    </a>
                 </div>
             </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
                 <div class="p-6 text-gray-900">
-                 {{-- {{ __("Cadastro de Categoria") }} --}}
-                 <a href="{{ route('item.index') }}">Cadastro de Itens</a>
+                    <a href="{{ route('item.index') }}" class="text-blue-600 hover:underline">
+                        Cadastro de Itens
+                    </a>
                 </div>
             </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                 {{-- {{ __("Cadastro de Categoria") }} --}}
-                 <a href="{{ route('movimento.index') }}">Movimentação de Itens</a>
+                    <a href="{{ route('movimento.index') }}" class="text-blue-600 hover:underline">
+                        Movimentação de Itens
+                    </a>
                 </div>
             </div>
+
         </div>
     </div>
-</x-app-layout>
+@endsection

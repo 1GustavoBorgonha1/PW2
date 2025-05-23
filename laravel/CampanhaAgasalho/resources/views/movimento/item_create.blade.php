@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">Novo Movimento</h2>
     </x-slot>
@@ -57,4 +59,4 @@
             </thead>
         </table>
     </div>
-</x-app-layout>
+@endsection

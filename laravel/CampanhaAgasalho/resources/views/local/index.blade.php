@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">Locais de Coleta</h2>
     </x-slot>
@@ -58,4 +60,4 @@
             <p>Nenhum local de coleta cadastrado.</p>
         @endif
     </div>
-</x-app-layout>
+@endsection

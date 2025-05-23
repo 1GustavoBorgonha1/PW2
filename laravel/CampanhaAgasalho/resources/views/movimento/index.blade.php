@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">Movimentos</h2>
     </x-slot>
@@ -38,10 +40,12 @@
                                 @endif
                             </td>
                             <td class="border p-2 flex space-x-2">
+                                <a href="{{ route('movimento.show', $mov->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded">Visualizar</a>
+
                                 <form action="{{ route('movimento.destroy', $mov->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este movimento?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-600 text-whmov px-3 py-1 rounded">Excluir</button>
+                                    <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded">Excluir</button>
                                 </form>
                             </td>
                         </tr>
@@ -52,4 +56,4 @@
             <p>Nenhum movimento cadastrado.</p>
         @endif
     </div>
-</x-app-layout>
+@endsection
