@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class LocalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $locais = Local::all();
+        $search = $request->input('search');
+
+        $locais = Local::when($search, function ($query, $search) {
+            return $query->whereRaw('LOWER(identifica) LIKE ?', ['%'.strtolower($search).'%']);
+        })->paginate(10);
+
         return view('local.index', compact('locais'));
     }
 

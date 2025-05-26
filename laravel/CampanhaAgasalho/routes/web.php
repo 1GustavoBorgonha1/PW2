@@ -26,12 +26,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Route::resource('categoria', CategoriaController::class);
     Route::get('/categoria', [CategoriaController::class, 'index'])->name('categoria.index');
     Route::get('/categoria/create', [CategoriaController::class, 'create'])->name('categoria.create');
     Route::post('/categoria', [CategoriaController::class, 'store'])->name('categoria.store');
     Route::get('/categoria/{categoria}/edit', [CategoriaController::class, 'edit'])->name('categoria.edit');
     Route::put('/categoria/{categoria}', [CategoriaController::class, 'update'])->name('categoria.update');
     Route::delete('/categoria/{categoria}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
+
 
     Route::get('/local', [LocalController::class, 'index'])->name('local.index');
     Route::get('/local/create', [LocalController::class, 'create'])->name('local.create');
@@ -46,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/item/{item}/edit', [ItemController::class, 'edit'])->name('item.edit');
     Route::put('/item/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('/item/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
+    Route::delete('/item/{item}/excluir-imagem', [ItemController::class, 'excluirImagem'])
+     ->name('item.excluir-imagem');
 
     Route::get('/movimento', [MovimentoController::class, 'index'])->name('movimento.index');
     Route::get('/movimento/criar', [MovimentoController::class, 'create'])->name('movimento.create');

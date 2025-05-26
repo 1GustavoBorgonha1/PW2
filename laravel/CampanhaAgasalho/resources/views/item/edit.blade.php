@@ -7,7 +7,7 @@
 
     <div class="max-w-2xl mx-auto py-10">
         @if ($errors->any())
-            <div class="mb-4 text-red-600">
+            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
                 <ul>
                     @foreach ($errors->all() as $erro)
                         <li>{{ $erro }}</li>
@@ -16,35 +16,84 @@
             </div>
         @endif
 
-        <form action="{{ route('item.update', $item->id) }}" method="POST" class="space-y-4">
+        <form action="{{ route('item.update', $item->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
-            @method('PUT') {{-- Indica que este formulário é para atualização --}}
+            @method('PUT')
 
             <div>
-                <label for="nome" class="block">Nome</label>
-                <input type="text" name="nome" id="nome" class="w-full border p-2 rounded" value="{{ $item->nome }}" required>
+                <label for="nome" class="block text-sm font-medium text-gray-700">Nome *</label>
+                <input type="text" name="nome" id="nome"
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                       value="{{ old('nome', $item->nome) }}" required>
             </div>
 
             <div>
-                <label for="descricao" class="block">Descrição</label>
-                <textarea name="descricao" id="descricao" class="w-full border p-2 rounded">{{ $item->descricao }}</textarea>
+                <label for="descricao" class="block text-sm font-medium text-gray-700">Descrição</label>
+                <textarea name="descricao" id="descricao" rows="3"
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ old('descricao', $item->descricao) }}</textarea>
             </div>
+
             <div>
-                <label for="categoria_id" class="block">Categoria</label>
-                <select name="categoria_id" id="categoria_id" class="w-full border p-2 rounded" required>
+                <label for="categoria_id" class="block text-sm font-medium text-gray-700">Categoria *</label>
+                <select name="categoria_id" id="categoria_id"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                     <option value="">Selecione uma categoria</option>
                     @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id }}" {{ $item->categoria_id == $categoria->id ? 'selected' : '' }}>
+                        <option value="{{ $categoria->id }}" {{ old('categoria_id', $item->categoria_id) == $categoria->id ? 'selected' : '' }}>
                             {{ $categoria->nome }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            <br>
+
             <div>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Atualizar</button>
-                <a href="{{ route('item.index') }}" class="inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded ml-2">Cancelar</a>
+                <label class="block text-sm font-medium text-gray-700">Imagem Atual</label>
+                @if($item->imagem)
+                    <div class="mt-2 flex items-center">
+                        <img src="{{ asset($item->imagem) }}" alt="Imagem do item" class="h-20 w-20 object-cover rounded">
+                        <button type="button" onclick="confirmarExclusaoImagem()"
+                                class="ml-4 bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition">
+                            Excluir Imagem
+                        </button>
+                    </div>
+                @else
+                    <p class="mt-2 text-sm text-gray-500">Nenhuma imagem cadastrada</p>
+                @endif
+            </div>
+
+            <div>
+                <label for="nova_imagem" class="block text-sm font-medium text-gray-700">Nova Imagem</label>
+                <input type="file" name="imagem" id="nova_imagem"
+                       class="mt-1 block w-full text-sm text-gray-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-md file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-blue-50 file:text-blue-700
+                              hover:file:bg-blue-100">
+                <p class="mt-1 text-sm text-gray-500">Deixe em branco para manter a imagem atual</p>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <a href="{{ route('item.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+                    Cancelar
+                </a>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                    Atualizar Item
+                </button>
             </div>
         </form>
+
+        <form id="formExcluirImagem" action="{{ route('item.excluir-imagem', $item->id) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
     </div>
+
+    <script>
+        function confirmarExclusaoImagem() {
+            if (confirm('Tem certeza que deseja excluir a imagem deste item?')) {
+                document.getElementById('formExcluirImagem').submit();
+            }
+        }
+    </script>
 @endsection

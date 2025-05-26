@@ -18,9 +18,22 @@ class MovimentoController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $movimentos = Movimento::with('local')->get();
+        $search = $request->input('search');
+
+        $movimentos = Movimento::with('local')
+            ->when($search, function ($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('observacao', 'ilike', "%{$search}%")
+                    ->orWhereHas('local', function($q) use ($search) {
+                        $q->where('identifica', 'ilike', "%{$search}%");
+                    });
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('movimento.index', compact('movimentos'));
     }
 
