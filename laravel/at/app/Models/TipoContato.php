@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoContato extends Model
 {
-    protected $table = 'tipocontatos';
-    protected $fillable = ['nome', 'descricao'];
+    protected $fillable = [
+        'tipo_contato',
+    ];
+
+    public function contatos()
+    {
+        return $this->hasMany(Contato::class);
+    }
 }

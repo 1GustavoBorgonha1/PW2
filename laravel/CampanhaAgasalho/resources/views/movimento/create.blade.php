@@ -84,12 +84,10 @@
             button.parentElement.remove();
         }
 
-        // Verifique os dados antes de enviar
         document.querySelector("form").addEventListener("submit", function(event) {
             const produtos = document.getElementsByName("produtos[]");
             const quantidades = document.getElementsByName("quantidades[]");
 
-            // Exibir os dados no console antes de enviar
             let produtoValues = [];
             let quantidadeValues = [];
             for (let i = 0; i < produtos.length; i++) {
@@ -100,7 +98,6 @@
             console.log("Produtos selecionados:", produtoValues);
             console.log("Quantidades selecionadas:", quantidadeValues);
 
-            // Caso a quantidade seja inválida, prevenir o envio do formulário
             if (quantidadeValues.includes("") || produtoValues.includes("")) {
                 event.preventDefault();
                 alert("Por favor, preencha todos os campos de quantidade e produto.");

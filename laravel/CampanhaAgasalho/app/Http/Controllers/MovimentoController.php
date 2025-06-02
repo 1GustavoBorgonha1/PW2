@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 class MovimentoController extends Controller
 {
     /**
-     * Exibe a lista de todos os movimentos.
+     *
      *
      * @return \Illuminate\View\View
      */
@@ -38,7 +38,7 @@ class MovimentoController extends Controller
     }
 
     /**
-     * Exibe o formulário para criar um novo movimento.
+     *
      *
      * @return \Illuminate\View\View
      */
@@ -50,7 +50,7 @@ class MovimentoController extends Controller
     }
 
     /**
-     * Armazena um novo movimento no banco de dados.
+     *
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -67,7 +67,7 @@ class MovimentoController extends Controller
             'quantidades.*' => 'required|integer|min:1',
         ]);
 
-        // Usar transação para garantir integridade dos dados
+
         DB::beginTransaction();
 
         try {
@@ -75,8 +75,6 @@ class MovimentoController extends Controller
                 'observacao' => $request->observacao,
                 'local_id' => $request->local_id,
                 'tipo_movimento' => $request->tipo_movimento,
-                // Adicionar user_id se necessário
-                // 'user_id' => auth()->id(),
             ]);
 
             foreach ($request->produtos as $index => $produtoId) {
@@ -120,7 +118,7 @@ class MovimentoController extends Controller
     }
 
     /**
-     * Exibe os detalhes de um movimento específico.
+     *
      *
      * @param  int  $id
      * @return \Illuminate\View\View
@@ -134,14 +132,13 @@ class MovimentoController extends Controller
 
 
     /**
-     * Remove o movimento especificado e estorna o estoque.
+     *
      *
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Movimento $movimento)
     {
-        // Inicia a transação para garantir a integridade do banco de dados
         DB::beginTransaction();
 
         try {
@@ -159,20 +156,16 @@ class MovimentoController extends Controller
                     $item->estoque += $quantidade;
                 }
 
-                // Salva a alteração no estoque do item
                 $item->save();
             }
 
             // Agora que o estoque foi estornado, podemos excluir o movimento
             $movimento->delete();
-
-            // Confirma a transação
             DB::commit();
 
             return redirect()->route('movimento.index')->with('success', 'Movimento excluído e estoque estornado com sucesso!');
 
         } catch (\Exception $e) {
-            // Em caso de erro, desfaz a transação
             DB::rollBack();
             return redirect()->route('movimento.index')->with('error', 'Erro ao excluir movimento e estornar estoque: ' . $e->getMessage());
         }

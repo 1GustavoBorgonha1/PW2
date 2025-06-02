@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-    protected $table = 'itens'; // Define explicitamente o nome da tabela
-    protected $fillable = ['nome', 'descricao','categoria_id','estoque'];
+    protected $table = 'itens'; 
+    protected $fillable = ['nome', 'descricao', 'categoria_id', 'estoque', 'foto', 'local_id'];
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);

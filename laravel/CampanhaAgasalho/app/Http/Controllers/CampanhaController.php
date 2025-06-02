@@ -13,15 +13,20 @@ class CampanhaController extends Controller
     public function index()
     {
         $locais = Local::all();
-        $maisMovimentados = Item::select('itens.*', DB::raw('count(itens_movimento.item_id) as movimentos_count'))
-            ->join('itens_movimento', 'itens.id', '=', 'itens_movimento.item_id')
-            ->groupBy('itens.id')
-            ->orderByDesc('movimentos_count')
+
+        $maisDoados = Item::select('itens.*')
+            ->addSelect(DB::raw('COALESCE((
+                SELECT SUM(im.qtd)
+                FROM itens_movimento im
+                JOIN movimentos m ON im.movimento_id = m.id
+                WHERE im.item_id = itens.id AND m.tipo_movimento = 2
+            ), 0) as quantidade_saida'))
+            ->orderByDesc('quantidade_saida')
             ->take(10)
             ->get();
+
         $semEstoque = Item::where('estoque', 0)->get();
 
-        // Altere para usar o layout 'campanha'
-        return view('campanha', compact('locais', 'maisMovimentados', 'semEstoque'));
+        return view('campanha', compact('locais', 'maisDoados', 'semEstoque'));
     }
 }

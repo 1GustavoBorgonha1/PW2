@@ -4,7 +4,6 @@
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 bg-white border-b border-gray-200">
-            <!-- Cabeçalho -->
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Movimentos</h2>
                 <a href="{{ route('movimento.create') }}"
@@ -13,7 +12,6 @@
                 </a>
             </div>
 
-            <!-- Mensagem de sucesso -->
             @if (session('success'))
                 <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
                     <div class="flex items-center">
@@ -23,7 +21,6 @@
                 </div>
             @endif
 
-            <!-- Barra de busca -->
             <form action="{{ route('movimento.index') }}" method="GET" class="mb-6">
                 <div class="flex flex-col md:flex-row gap-3">
                     <div class="relative flex-grow">
@@ -47,7 +44,6 @@
                 </div>
             </form>
 
-            <!-- Tabela de movimentos -->
             @if ($movimentos->count() > 0)
                 <div class="overflow-x-auto shadow rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -99,7 +95,6 @@
                     </table>
                 </div>
 
-                <!-- Paginação -->
                 <div class="mt-4 flex flex-col md:flex-row items-center justify-between">
                     <div class="text-sm text-gray-500 mb-2 md:mb-0">
                         Mostrando {{ $movimentos->firstItem() }} a {{ $movimentos->lastItem() }} de {{ $movimentos->total() }} movimentos

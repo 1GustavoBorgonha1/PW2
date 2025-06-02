@@ -18,7 +18,7 @@
 
         <form action="{{ route('local.update', $local->id) }}" method="POST" class="space-y-4">
             @csrf
-            @method('PUT') {{-- Indica que este formulário é para atualização --}}
+            @method('PUT') 
 
             <div>
                 <label for="identifica" class="block">Indentificão do Local</label>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('estoque')->default(0);
             $table->timestamps();
 
-            // Definindo a chave estrangeira
+            // Chave estrangeira
             $table->foreign('categoria_id')
                   ->references('id')
                   ->on('categorias');

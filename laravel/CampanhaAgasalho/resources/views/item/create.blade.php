@@ -18,8 +18,6 @@
 
         <form action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
-
-            <!-- Campo Nome -->
             <div>
                 <label for="nome" class="block text-sm font-medium text-gray-700">Nome do Item *</label>
                 <input type="text" name="nome" id="nome"
@@ -27,14 +25,12 @@
                        value="{{ old('nome') }}" required>
             </div>
 
-            <!-- Campo Descrição -->
             <div>
                 <label for="descricao" class="block text-sm font-medium text-gray-700">Descrição</label>
                 <textarea name="descricao" id="descricao" rows="3"
                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ old('descricao') }}</textarea>
             </div>
 
-            <!-- Campo Categoria -->
             <div>
                 <label for="categoria_id" class="block text-sm font-medium text-gray-700">Categoria *</label>
                 <select name="categoria_id" id="categoria_id"
@@ -48,19 +44,11 @@
                 </select>
             </div>
 
-            <!-- Campo Imagem -->
-            <div>
-                <label for="imagem" class="block text-sm font-medium text-gray-700">Imagem do Item *</label>
-                <div class="mt-1 flex items-center">
-                    <input type="file" name="imagem" id="imagem"
-                           class="focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <p class="mt-2 text-sm text-gray-500">
-                    Formatos aceitos: JPEG, PNG, JPG (Máx. 2MB)
-                </p>
+            <div class="mb-4">
+                <label for="foto" class="block text-gray-700 text-sm font-bold mb-2">Foto:</label>
+                <input type="file" name="foto" id="foto" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
-            <!-- Botões -->
             <div class="flex justify-end space-x-3">
                 <a href="{{ route('item.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
                     Cancelar

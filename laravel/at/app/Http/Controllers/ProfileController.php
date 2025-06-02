@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+
 class ProfileController extends Controller
 {
     /**
@@ -56,5 +57,30 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Gera um novo token de API para o usuário autenticado.
+     */
+    public function generateToken(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        // Gera um novo token chamado 'default'
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        // Armazena o token na sessão para exibir ao usuário
+        return Redirect::route('profile.edit')->with('token', $token);
+    }
+
+    /**
+     * Revoga todos os tokens do usuário autenticado.
+     */
+    public function revokeToken(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        // Revoga todos os tokens do usuário
+        $user->tokens()->delete();
+
+        return Redirect::route('profile.edit')->with('status', 'token-revoked');
     }
 }

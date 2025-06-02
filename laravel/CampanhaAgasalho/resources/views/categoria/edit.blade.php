@@ -18,7 +18,7 @@
 
         <form action="{{ route('categoria.update', $categoria->id) }}" method="POST" class="space-y-4">
             @csrf
-            @method('PUT') {{-- Indica que este formulário é para atualização --}}
+            @method('PUT')
 
             <div>
                 <label for="nome" class="block">Nome</label>
@@ -38,4 +38,3 @@
     </div>
 @endsection
 
-{{-- Adicione qualquer script ou estilo adicional aqui, se necessário --}}

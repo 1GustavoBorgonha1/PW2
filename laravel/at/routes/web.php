@@ -1,29 +1,36 @@
 <?php
 
+use App\Http\Controllers\ContatosController;
+use App\Http\Controllers\TipoContatosController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TipoContatoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/contatos/search', [ContatosController::class, 'search'])->name('contatos.search')->middleware(['auth', 'verified']);
+
+Route::resource('contatos',ContatosController::class)->middleware(['auth', 'verified']);
+
+Route::resource('tipocontatos',TipoContatosController::class)->middleware(['auth', 'verified']);
+
+
+Route::get('/about', function () {
+    return view('about');
+})->middleware(['auth', 'verified'])->name('about');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/tipocontato', [TipoContatoController::class, 'index'])->name('tipocontato.index');
-    Route::get('/tipocontato/create', [TipoContatoController::class, 'create'])->name('tipocontato.create');
-    Route::post('/tipocontato', [TipoContatoController::class, 'store'])->name('tipocontato.store');
-    Route::get('/tipocontato/{tipocontato}/edit', [TipoContatoController::class, 'edit'])->name('tipocontato.edit');
-    Route::put('/tipocontato/{tipocontato}', [TipoContatoController::class, 'update'])->name('tipocontato.update');
-    Route::delete('/tipocontato/{tipocontato}', [TipoContatoController::class, 'destroy'])->name('tipocontato.destroy');
-
+    // Rotas para gerar e excluir tokens
+    Route::post('/profile/token', [ProfileController::class, 'generateToken'])->name('profile.token.generate');
+    Route::delete('/profile/token', [ProfileController::class, 'revokeToken'])->name('profile.token.revoke');
 });
 
 require __DIR__.'/auth.php';

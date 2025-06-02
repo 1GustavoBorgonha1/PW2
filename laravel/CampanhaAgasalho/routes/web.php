@@ -46,10 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
     Route::post('/item', [ItemController::class, 'store'])->name('item.store');
     Route::get('/item/{item}/edit', [ItemController::class, 'edit'])->name('item.edit');
-    Route::put('/item/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('/item/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
+    Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
+    Route::put('/item/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('/item/{item}/excluir-imagem', [ItemController::class, 'excluirImagem'])
      ->name('item.excluir-imagem');
+
 
     Route::get('/movimento', [MovimentoController::class, 'index'])->name('movimento.index');
     Route::get('/movimento/criar', [MovimentoController::class, 'create'])->name('movimento.create');

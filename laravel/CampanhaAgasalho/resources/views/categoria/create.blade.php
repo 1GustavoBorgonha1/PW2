@@ -3,14 +3,13 @@
 @section('content')
     <div class="max-w-2xl mx-auto py-10">
 
-        {{-- Cabeçalho da página --}}
         <div class="mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">
                 Nova Categoria
             </h2>
         </div>
 
-        {{-- Exibição de erros de validação --}}
+
         @if ($errors->any())
             <div class="mb-4 text-red-600 bg-red-100 border border-red-300 p-4 rounded">
                 <ul class="list-disc pl-5">
@@ -21,7 +20,6 @@
             </div>
         @endif
 
-        {{-- Formulário --}}
         <form action="{{ route('categoria.store') }}" method="POST" class="space-y-6 bg-white p-6 rounded shadow">
             @csrf
 
