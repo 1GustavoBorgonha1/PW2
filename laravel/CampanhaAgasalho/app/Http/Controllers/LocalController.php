@@ -13,7 +13,9 @@ class LocalController extends Controller
 
         $locais = Local::when($search, function ($query, $search) {
             return $query->whereRaw('LOWER(identifica) LIKE ?', ['%'.strtolower($search).'%']);
-        })->paginate(10);
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
 
         return view('local.index', compact('locais'));
     }
@@ -68,7 +70,13 @@ class LocalController extends Controller
 
     public function destroy(Local $local)
     {
+        if ($local->movimentos()->exists()) {
+            return redirect()->back()
+                ->with('error', 'Não foi possível excluir: existem movimentos vinculados a este local!');
+        }
+
         $local->delete();
-        return redirect()->route('local.index')->with('success', 'Local excluído com sucesso!');
+        return redirect()->route('local.index')
+            ->with('success', 'Local excluído com sucesso!');
     }
 }

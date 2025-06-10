@@ -13,4 +13,9 @@ class Local extends Model
     {
         return $this->belongsTo(Categoria::class);
     }
+
+    public function movimentos()
+    {
+        return $this->hasMany(Movimento::class);
+    }
 }

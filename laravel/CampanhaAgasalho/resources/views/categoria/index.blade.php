@@ -4,7 +4,6 @@
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 bg-white border-b border-gray-200">
-            <!-- Cabeçalho -->
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Categorias</h2>
                 <a href="{{ route('categoria.create') }}"
@@ -22,7 +21,17 @@
                 </div>
             @endif
 
-            <!-- Barra de busca -->
+            @if ($errors->any())
+                <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        @foreach ($errors->all() as $error)
+                            <span>{{ $error }}</span>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             <form action="{{ route('categoria.index') }}" method="GET" class="mb-6">
                 <div class="flex flex-col md:flex-row gap-3">
                     <div class="relative flex-grow">
@@ -87,7 +96,7 @@
                         </tbody>
                     </table>
                 </div>
-
+ 
                 <div class="mt-4 flex flex-col md:flex-row items-center justify-between">
                     <div class="text-sm text-gray-500 mb-2 md:mb-0">
                         Mostrando {{ $categorias->firstItem() }} a {{ $categorias->lastItem() }} de {{ $categorias->total() }} categorias
@@ -116,4 +125,5 @@
         </div>
     </div>
 </div>
+
 @endsection

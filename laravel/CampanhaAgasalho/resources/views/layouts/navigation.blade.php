@@ -4,18 +4,23 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
-                </div>
+            <div class="shrink-0 flex items-center">
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+                    <!-- Ícone de casaco -->
+                    <svg class="h-8 w-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L7 7H4V10H7V20H17V10H20V7H17L12 2M12 5.8L13.5 7.3V10H10.5V7.3L12 5.8M9 12H15V14H9V12Z"/>
+                    </svg>
+                    <!-- Texto da campanha -->
+                    <span class="text-xl font-bold text-gray-800 hidden md:block">Campanha do Agasalho</span>
+                </a>
+            </div>
 
-                <!-- Navigation Links -->
+                {{-- <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Menu') }}
                     </x-nav-link>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Settings Dropdown -->

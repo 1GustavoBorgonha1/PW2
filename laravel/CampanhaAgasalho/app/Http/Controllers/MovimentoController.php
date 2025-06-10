@@ -137,8 +137,10 @@ class MovimentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Movimento $movimento)
-    {
+public function destroy(Movimento $movimento)
+{
+    // Verifica se existem registros dependentes (itens vinculados)
+    if ($movimento->itens()->exists()) {
         DB::beginTransaction();
 
         try {
@@ -159,17 +161,29 @@ class MovimentoController extends Controller
                 $item->save();
             }
 
-            // Agora que o estoque foi estornado, podemos excluir o movimento
+            // Remove os itens vinculados na tabela pivot primeiro
+            $movimento->itens()->detach();
+
+            // Agora podemos excluir o movimento
             $movimento->delete();
+
             DB::commit();
 
-            return redirect()->route('movimento.index')->with('success', 'Movimento excluído e estoque estornado com sucesso!');
+            return redirect()->route('movimento.index')
+                ->with('success', 'Movimento excluído e estoque estornado com sucesso!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('movimento.index')->with('error', 'Erro ao excluir movimento e estornar estoque: ' . $e->getMessage());
+            return redirect()->route('movimento.index')
+                ->with('error', 'Erro ao excluir movimento e estornar estoque: ' . $e->getMessage());
         }
-
     }
+
+    // Se não houver itens vinculados, apenas exclui o movimento
+    $movimento->delete();
+
+    return redirect()->route('movimento.index')
+        ->with('success', 'Movimento excluído com sucesso!');
+}
 
 }

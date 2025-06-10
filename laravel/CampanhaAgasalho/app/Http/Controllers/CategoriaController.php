@@ -13,7 +13,9 @@ class CategoriaController extends Controller
 
         $categorias = Categoria::when($search, function ($query, $search) {
             return $query->where('nome', 'like', "%{$search}%");
-        })->paginate(10);
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
 
         return view('categoria.index', compact('categorias'));
     }
@@ -54,7 +56,11 @@ class CategoriaController extends Controller
 
     public function destroy(Categoria $categoria)
     {
+        if ($categoria->itens()->exists()) {
+            return back()->withErrors(['error' => 'Não foi possível excluir: existem itens vinculados a esta categoria!']);
+        }
+
         $categoria->delete();
-        return redirect()->route('categoria.index')->with('success', 'Categoria excluída com sucesso!');
+        return back()->with('success', 'Categoria excluída com sucesso!');
     }
 }

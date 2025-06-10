@@ -14,7 +14,9 @@ class ItemController extends Controller
         $search = $request->input('search');
         $itens = Item::when($search, function ($query, $search) {
             return $query->whereRaw('LOWER(nome) LIKE ?', ['%'.strtolower($search).'%']);
-        })->paginate(10);
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
         return view('item.index', compact('itens'));
     }
 
@@ -149,6 +151,10 @@ class ItemController extends Controller
 
     public function destroy(Item $item)
     {
+        if ($item->itensmovimento()->exists()) {
+            return back()->with('error', 'Não foi possível excluir: existem movimentos vinculados a este item!');
+        }
+
         if ($item->foto && file_exists(public_path($item->foto))) {
             unlink(public_path($item->foto));
         }

@@ -22,6 +22,15 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+
             <!-- Barra de busca -->
             <form action="{{ route('local.index') }}" method="GET" class="mb-6">
                 <div class="flex flex-col md:flex-row gap-3">

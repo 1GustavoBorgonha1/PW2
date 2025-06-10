@@ -15,6 +15,12 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <a href="{{ route('item.create') }}"
                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition">
@@ -66,16 +72,32 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ite->estoque }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center space-x-2">
-                                              <a href="{{ route('item.show', $ite->id) }}"
-                                               class="inline-flex items-center px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition"
-                                               title="Visualizar">
-                                                <i class="fas fa-eye mr-1"></i> Ver
-                                            </a>
-                                            <a href="{{ route('item.edit', $ite->id) }}"
-                                            class="inline-flex items-center px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white text-xs rounded transition"
-                                            title="Editar">
-                                                <i class="fas fa-edit mr-1"></i> Editar
-                                            </a>
+                                            <form action="{{ route('item.show', $ite->id) }}" method="GET" class="inline">
+                                                <button type="submit"
+                                                        class="inline-flex items-center px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition"
+                                                        title="Visualizar">
+                                                    <i class="fas fa-eye mr-1"></i> Ver
+                                                </button>
+                                            </form>
+
+                                            <form action="{{ route('item.edit', $ite->id) }}" method="GET" class="inline">
+                                                <button type="submit"
+                                                        class="inline-flex items-center px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white text-xs rounded transition"
+                                                        title="Editar">
+                                                    <i class="fas fa-edit mr-1"></i> Editar
+                                                </button>
+                                            </form>
+
+                                            <form action="{{ route('item.destroy', $ite->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                        class="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-xs rounded transition"
+                                                        title="Excluir"
+                                                        onclick="return confirm('Tem certeza que deseja excluir esta categoria?')">
+                                                    <i class="fas fa-trash-alt mr-1"></i> Excluir
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
