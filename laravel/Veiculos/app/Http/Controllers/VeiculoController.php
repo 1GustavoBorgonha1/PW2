@@ -2,65 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\Veiculo;
 use Illuminate\Http\Request;
-use App\Models\Categoria;
+use App\Models\Marca;
 
-class ItemController extends Controller
+class VeiculoController extends Controller
 {
     public function index()
     {
-        $itens = item::all();
-        // dd($itens); // Adicione esta linha
-        return view('item.index', compact('itens'));
+        $veiculos = veiculo::all();
+        return view('veiculo.index', compact('veiculos'));
     }
 
     public function create()
     {
-        $categorias = Categoria::all(); // Busca todas as categorias do banco de dados
-        return view('item.create', compact('categorias')); // Passa as categorias para a view
+        $marca = Marca::all();
+        return view('veiculo.create', compact('marcas'));
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'nome' => 'required|string|max:255',
-        'descricao' => 'nullable|string',
-        'categoria_id' => 'required|exists:categorias,id',
-    ]);
-
-    // dd($request->categoria_id); // Confirmamos que o valor está aqui
-
-    $item = Item::create([
-        'nome' => $request->nome,
-        'descricao' => $request->descricao,
-        'categoria_id' => $request->categoria_id,
-    ]);
-
-    return redirect()->route('item.index')->with('success', 'Item cadastrado com sucesso!');
-    }
-
-    public function edit(Item $item)
-    {
-        $categorias = Categoria::all();
-        return view('item.edit', compact('item', 'categorias'));
-    }
-
-    public function update(Request $request, Item $item)
     {
         $request->validate([
-            'nome' => 'required|string|max:255',
-            'descricao' => 'required|string|max:255',
+            'modelo' => 'required|string|max:255',
+            'descricao' => 'nullable|string',
+            'placa' => 'required|string|max:7',
+            'kilometragem' => 'nullable|integer|max:7',
+            'marca_id' => 'required|exists:marcas,id',
         ]);
 
-        $item->update($request->only(['nome','descricao']));
 
-        return redirect()->route('item.index')->with('success', 'Item atualizado com sucesso!');
+        $veiculo = Veiculo::create([
+            'modelo' => $request->modelo,
+            'descricao' => $request->descricao,
+            'placa' => $request->placa,
+            'kilometragem' => $request->kilometragem,
+            'marca_id' => $request->marca_id,
+        ]);
+
+        return redirect()->route('veiculo.index')->with('success', 'Veiculo cadastrado com sucesso!');
     }
 
-    public function destroy(Item $item)
+    public function edit(Veiculo $veiculo)
     {
-        $item->delete();
-        return redirect()->route('item.index')->with('success', 'Item excluído com sucesso!');
+        $marcas = Marca::all();
+        return view('veiculo.edit', compact('veiculo', 'marcas'));
+    }
+
+    public function update(Request $request, Veiculo $veiculo)
+    {
+        $request->validate([
+            'modelo' => 'required|string|max:255',
+            'descricao' => 'nullable|string',
+            'placa' => 'required|string|max:7',
+            'kilometragem' => 'nullable|integer|max:7',
+            'marca_id' => 'required|exists:marcas,id',
+        ]);
+
+        $veiculo->update($request->only(['modelo','descricao', 'placa', 'kilometragem', 'marca_id']));
+
+        return redirect()->route('veiculo.index')->with('success', 'Veiculo atualizado com sucesso!');
+    }
+
+    public function destroy(Veiculo $veiculo)
+    {
+        $veiculo->delete();
+        return redirect()->route('veiculo.index')->with('success', 'Veiculo excluído com sucesso!');
     }
 }

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->unsignedBigInteger('marca_id');
             $table->timestamps();
 
-            // Definindo a chave estrangeira
             $table->foreign('marca_id')
                   ->references('id')
                   ->on('marcas');
