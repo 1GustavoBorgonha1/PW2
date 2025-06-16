@@ -10,13 +10,13 @@ class VeiculoController extends Controller
 {
     public function index()
     {
-        $veiculos = veiculo::all();
+        $veiculos = Veiculo::with('marca')->get();
         return view('veiculo.index', compact('veiculos'));
     }
 
     public function create()
     {
-        $marca = Marca::all();
+        $marcas = Marca::all();
         return view('veiculo.create', compact('marcas'));
     }
 
@@ -26,7 +26,7 @@ class VeiculoController extends Controller
             'modelo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'placa' => 'required|string|max:7',
-            'kilometragem' => 'nullable|integer|max:7',
+            'kilometragem' => 'nullable|integer|digits_between:1,7',
             'marca_id' => 'required|exists:marcas,id',
         ]);
 
@@ -54,7 +54,7 @@ class VeiculoController extends Controller
             'modelo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'placa' => 'required|string|max:7',
-            'kilometragem' => 'nullable|integer|max:7',
+            'kilometragem' => 'nullable|integer|digits_between:1,7',
             'marca_id' => 'required|exists:marcas,id',
         ]);
 
@@ -68,4 +68,12 @@ class VeiculoController extends Controller
         $veiculo->delete();
         return redirect()->route('veiculo.index')->with('success', 'Veiculo excluído com sucesso!');
     }
+
+        public function show($id)
+    {
+        $veiculo = Veiculo::with('marca')->findOrFail($id);
+
+        return view('veiculo.show', compact('veiculo'));
+    }
+
 }

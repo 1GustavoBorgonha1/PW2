@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MarcaController;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\VeiculoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,12 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/marca/{marca}', [MarcaController::class, 'update'])->name('marca.update');
     Route::delete('/marca/{marca}', [MarcaController::class, 'destroy'])->name('marca.destroy');
 
-    Route::get('/item', [ItemController::class, 'index'])->name('item.index');
-    Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
-    Route::post('/item', [ItemController::class, 'store'])->name('item.store');
-    Route::get('/item/{item}/edit', [ItemController::class, 'edit'])->name('item.edit');
-    Route::put('/item/{item}', [ItemController::class, 'update'])->name('item.update');
-    Route::delete('/item/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
+    Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index');
+    Route::get('/veiculo/{veiculo}', [VeiculoController::class, 'show'])->name('veiculo.show');
+    Route::get('/veiculo/create', [VeiculoController::class, 'create'])->name('veiculo.create');
+    Route::post('/veiculo', [VeiculoController::class, 'store'])->name('veiculo.store');
+    Route::get('/veiculo/{veiculo}/edit', [VeiculoController::class, 'edit'])->name('veiculo.edit');
+    Route::put('/veiculo/{veiculo}', [VeiculoController::class, 'update'])->name('veiculo.update');
+    Route::delete('/veiculo/{veiculo}', [VeiculoController::class, 'destroy'])->name('veiculo.destroy');
 
 });
 

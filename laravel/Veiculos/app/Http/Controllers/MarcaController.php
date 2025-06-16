@@ -9,9 +9,16 @@ use Illuminate\Http\Request;
 
     class MarcaController extends Controller
     {
-        public function index()
+        public function index(Request $request)
         {
-            $marcas = Marca::all();
+            $search = $request->input('search');
+
+            $marcas = Marca::when($search, function ($query, $search) {
+                return $query->where('nome', 'like', "%{$search}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
             return view('marca.index', compact('marcas'));
         }
 

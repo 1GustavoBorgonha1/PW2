@@ -8,7 +8,7 @@ class Veiculo extends Model
 {
     protected $table = 'veiculos'; // Define explicitamente o nome da tabela
     protected $fillable = ['modelo', 'descricao','placa','kilometragem','marca_id'];
-    public function categoria()
+    public function marca()
     {
         return $this->belongsTo(Marca::class);
     }
