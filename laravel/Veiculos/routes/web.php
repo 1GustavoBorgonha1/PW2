@@ -29,9 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/marca/{marca}', [MarcaController::class, 'destroy'])->name('marca.destroy');
 
     Route::get('/veiculo', [VeiculoController::class, 'index'])->name('veiculo.index');
-    Route::get('/veiculo/{veiculo}', [VeiculoController::class, 'show'])->name('veiculo.show');
     Route::get('/veiculo/create', [VeiculoController::class, 'create'])->name('veiculo.create');
     Route::post('/veiculo', [VeiculoController::class, 'store'])->name('veiculo.store');
+    Route::get('/veiculo/{veiculo}', [VeiculoController::class, 'show'])->name('veiculo.show');
     Route::get('/veiculo/{veiculo}/edit', [VeiculoController::class, 'edit'])->name('veiculo.edit');
     Route::put('/veiculo/{veiculo}', [VeiculoController::class, 'update'])->name('veiculo.update');
     Route::delete('/veiculo/{veiculo}', [VeiculoController::class, 'destroy'])->name('veiculo.destroy');

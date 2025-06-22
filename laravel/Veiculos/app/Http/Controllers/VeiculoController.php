@@ -8,16 +8,25 @@ use App\Models\Marca;
 
 class VeiculoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $veiculos = Veiculo::with('marca')->get();
+        $search = $request->input('search');
+
+        $veiculos = Veiculo::with('marca')
+            ->when($search, function ($query, $search) {
+                return $query->where('modelo', 'like', "%{$search}%")
+                            ->orWhere('placa', 'like', "%{$search}%")
+                            ->orWhere('descricao', 'like', "%{$search}%");
+            })
+            ->get();
+
         return view('veiculo.index', compact('veiculos'));
     }
 
     public function create()
     {
-        $marcas = Marca::all();
-        return view('veiculo.create', compact('marcas'));
+        $marcas = Marca::all(); // Carrega todas as marcas
+        return view('veiculo.create', compact('marcas')); // Passa $marcas para a view
     }
 
     public function store(Request $request)
@@ -69,7 +78,7 @@ class VeiculoController extends Controller
         return redirect()->route('veiculo.index')->with('success', 'Veiculo excluído com sucesso!');
     }
 
-        public function show($id)
+    public function show($id)
     {
         $veiculo = Veiculo::with('marca')->findOrFail($id);
 
