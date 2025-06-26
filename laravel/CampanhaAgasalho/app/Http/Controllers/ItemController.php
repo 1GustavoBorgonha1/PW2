@@ -50,7 +50,6 @@ class ItemController extends Controller
     }
 
 
-    // MÉTODO EDIT ADICIONADO AQUI
     public function edit(string $id)
     {
         $item = Item::findOrFail($id);
@@ -70,27 +69,21 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         $oldPhoto = $item->foto;
 
-        // Atualiza campos básicos primeiro
         $item->nome = $validatedData['nome'];
         $item->descricao = $validatedData['descricao'];
         $item->categoria_id = $validatedData['categoria_id'];
 
-        // Processamento da imagem (se fornecida)
         if ($request->hasFile('foto')) {
             try {
-                // Primeiro faz o upload da nova imagem
                 $newPhotoPath = $this->storeNewImage($request->file('foto'), $validatedData['nome']);
 
-                // Atualiza o modelo com o novo caminho
                 $item->foto = $newPhotoPath;
 
-                // Remove a imagem antiga somente se o novo upload foi bem-sucedido
                 if ($oldPhoto) {
                     $this->removeOldImage($oldPhoto);
                 }
 
             } catch (\Exception $e) {
-                // Se houver erro no upload, mantém a imagem antiga
                 report($e);
                 return back()->with('error', 'Erro ao processar a imagem: '.$e->getMessage());
             }

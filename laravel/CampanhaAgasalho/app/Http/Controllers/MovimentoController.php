@@ -93,7 +93,7 @@ class MovimentoController extends Controller
                 ItemMovimento::create([
                     'movimento_id' => $movimento->id,
                     'item_id' => $produtoId,
-                    'qtd' => $quantidade, // Usando o nome correto da coluna
+                    'qtd' => $quantidade,
                 ]);
 
                 // Atualiza o estoque
@@ -137,53 +137,51 @@ class MovimentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-public function destroy(Movimento $movimento)
-{
-    // Verifica se existem registros dependentes (itens vinculados)
-    if ($movimento->itens()->exists()) {
-        DB::beginTransaction();
+    public function destroy(Movimento $movimento)
+    {
+        if ($movimento->itens()->exists()) {
+            DB::beginTransaction();
 
-        try {
-            // Carrega os itens relacionados ao movimento
-            $movimento->load('itens');
+            try {
+                $movimento->load('itens');
 
-            // Itera sobre os itens do movimento para desfazer as alterações no estoque
-            foreach ($movimento->itens as $item) {
-                $quantidade = $item->pivot->qtd; // Obtém a quantidade da tabela pivot
+                // Itera sobre os itens do movimento para desfazer as alterações no estoque
+                foreach ($movimento->itens as $item) {
+                    $quantidade = $item->pivot->qtd; // Obtém a quantidade da tabela pivot
 
-                // Desfaz a alteração no estoque com base no tipo do movimento original
-                if ($movimento->tipo_movimento == 1) { // Se foi uma entrada, diminui o estoque
-                    $item->estoque -= $quantidade;
-                } else { // Se foi uma saída, aumenta o estoque
-                    $item->estoque += $quantidade;
+                    // Desfaz a alteração no estoque com base no tipo do movimento original
+                    if ($movimento->tipo_movimento == 1) { // Se foi uma entrada, diminui o estoque
+                        $item->estoque -= $quantidade;
+                    } else { // Se foi uma saída, aumenta o estoque
+                        $item->estoque += $quantidade;
+                    }
+
+                    $item->save();
                 }
 
-                $item->save();
+                // Remove os itens vinculados na tabela pivot primeiro
+                $movimento->itens()->detach();
+
+                // Agora podemos excluir o movimento
+                $movimento->delete();
+
+                DB::commit();
+
+                return redirect()->route('movimento.index')
+                    ->with('success', 'Movimento excluído e estoque estornado com sucesso!');
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return redirect()->route('movimento.index')
+                    ->with('error', 'Erro ao excluir movimento e estornar estoque: ' . $e->getMessage());
             }
-
-            // Remove os itens vinculados na tabela pivot primeiro
-            $movimento->itens()->detach();
-
-            // Agora podemos excluir o movimento
-            $movimento->delete();
-
-            DB::commit();
-
-            return redirect()->route('movimento.index')
-                ->with('success', 'Movimento excluído e estoque estornado com sucesso!');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('movimento.index')
-                ->with('error', 'Erro ao excluir movimento e estornar estoque: ' . $e->getMessage());
         }
+
+        // Se não houver itens vinculados, apenas exclui o movimento
+        $movimento->delete();
+
+        return redirect()->route('movimento.index')
+            ->with('success', 'Movimento excluído com sucesso!');
     }
-
-    // Se não houver itens vinculados, apenas exclui o movimento
-    $movimento->delete();
-
-    return redirect()->route('movimento.index')
-        ->with('success', 'Movimento excluído com sucesso!');
-}
 
 }
