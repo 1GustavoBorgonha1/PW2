@@ -22,7 +22,7 @@ class CampanhaController extends Controller
                 WHERE im.item_id = itens.id AND m.tipo_movimento = 2
             ), 0) as quantidade_saida'))
             ->orderByDesc('quantidade_saida')
-            ->take(10)
+            ->take(12)
             ->get();
 
         $semEstoque = Item::where('estoque', 0)->get();
